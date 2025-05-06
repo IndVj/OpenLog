@@ -1,6 +1,28 @@
-@OpenLogAPI_HostAddress = http://localhost:5253
+﻿@OpenLogAPI_HostAddress = http://localhost:5253
+@jwttoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidGVzdHVzZXIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJMb2dnZXIiLCJleHAiOjE3NDY0OTI3MDJ9.eBrAx1f0p9xRmeUNej1Woh0UcKim3-2q6NT9w5zeiKw
 
-GET {{OpenLogAPI_HostAddress}}/weatherforecast/
+###  Get JWT Token
+POST {{OpenLogAPI_HostAddress}}/api/auth/token
 Accept: application/json
 
-###
+###  Debug - Who Am I
+GET {{OpenLogAPI_HostAddress}}/api/auth/whoami
+Authorization: Bearer {{jwttoken}}
+Accept: application/json
+
+###  Get Logs (JWT Protected)
+GET {{OpenLogAPI_HostAddress}}/api/log?level=Error&source=System
+Authorization: Bearer <your-token-here>
+Accept: application/json
+
+
+###  Post a New Log Entry
+POST {{OpenLogAPI_HostAddress}}/api/log
+Content-Type: application/json
+Authorization: Bearer <your-token-here>
+
+{
+  "level": "Error",
+  "message": "Test error from HTTP file",
+  "source": "VisualStudio"
+}
