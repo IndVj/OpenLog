@@ -29,7 +29,7 @@ namespace Core.Services
             return await this.logRepository.GetAllLogsAsync(level, source);
 
         }
-        public async Task AddLogAsync(LogEntry logEntry)
+        public async Task<string> AddLogAsync(LogEntry logEntry)
         {
             if (string.IsNullOrEmpty(logEntry.Source))
             {
@@ -46,7 +46,7 @@ namespace Core.Services
                 throw new ArgumentException("Message cannot be empty");
             }
 
-            await this.logRepository.AddLogAsync(logEntry);
+            return await this.logRepository.AddLogAsync(logEntry);
 
         }
     }

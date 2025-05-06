@@ -22,21 +22,21 @@ namespace OpenLogAPI.Controllers
         public IActionResult GenerateToken()
         {
 
-          var claims = new[]
-          {
-            new Claim(ClaimTypes.Name, "testuser"),
-            new Claim(ClaimTypes.Role, "Logger")
-          };
+            var claims = new[]
+            {
+              new Claim(ClaimTypes.Name, "testuser"),
+              new Claim(ClaimTypes.Role, "Logger")
+            };
 
-          var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
-          var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-          var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
-                signingCredentials: creds);
+            var token = new JwtSecurityToken(
+                  claims: claims,
+                  expires: DateTime.UtcNow.AddHours(1),
+                  signingCredentials: creds);
 
-          return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+            return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token)});
         }
 
         [Authorize]

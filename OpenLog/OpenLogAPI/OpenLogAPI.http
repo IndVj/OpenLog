@@ -1,5 +1,5 @@
 ﻿@OpenLogAPI_HostAddress = http://localhost:5253
-@jwttoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidGVzdHVzZXIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJMb2dnZXIiLCJleHAiOjE3NDY0OTI3MDJ9.eBrAx1f0p9xRmeUNej1Woh0UcKim3-2q6NT9w5zeiKw
+@jwttoken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidGVzdHVzZXIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJMb2dnZXIiLCJleHAiOjE3NDY1NjcwMDh9.FzffcRjY0dBSCSQua7VuJN7X6qjJHRy2sgXVW_zWzLs
 
 ###  Get JWT Token
 POST {{OpenLogAPI_HostAddress}}/api/auth/token
@@ -10,19 +10,35 @@ GET {{OpenLogAPI_HostAddress}}/api/auth/whoami
 Authorization: Bearer {{jwttoken}}
 Accept: application/json
 
-###  Get Logs (JWT Protected)
-GET {{OpenLogAPI_HostAddress}}/api/log?level=Error&source=System
-Authorization: Bearer <your-token-here>
+###  Get Logs by APP (JWT Protected)
+GET {{OpenLogAPI_HostAddress}}/api/log?level=Error&source=App
+Authorization: Bearer {{jwttoken}}
+Accept: application/json
+
+###  Get Logs by API (JWT Protected)
+GET {{OpenLogAPI_HostAddress}}/api/log?level=Warning&source=API
+Authorization: Bearer {{jwttoken}}
 Accept: application/json
 
 
-###  Post a New Log Entry
+### First Log
 POST {{OpenLogAPI_HostAddress}}/api/log
 Content-Type: application/json
-Authorization: Bearer <your-token-here>
+Authorization: Bearer {{jwttoken}}
 
 {
   "level": "Error",
-  "message": "Test error from HTTP file",
-  "source": "VisualStudio"
+  "message": "Error 1",
+  "source": "App"
+}
+
+### Second Log
+POST {{OpenLogAPI_HostAddress}}/api/log
+Content-Type: application/json
+Authorization: Bearer {{jwttoken}}
+
+{
+  "level": "Warning",
+  "message": "Warning 2",
+  "source": "API"
 }

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace OpenLogAPI.Controllers
 {
-    [Authorize(Roles = "Logger")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class LogController : ControllerBase
@@ -23,7 +23,18 @@ namespace OpenLogAPI.Controllers
         [HttpGet]
         public async Task<ActionResult> Get([FromQuery] string level, string source)
         {
+            if (string.IsNullOrWhiteSpace(level) || string.IsNullOrWhiteSpace(source))
+            {
+                return BadRequest("Both 'level' and 'source' query parameters are required.");
+            }
+
             var logs = await _logService.GetAllLogsAsync(level, source);
+
+            if (logs == null || !logs.Any())
+            {
+                return NotFound("No logs found for the given criteria.");
+            }
+
             return Ok(logs);
         }
      
@@ -31,8 +42,14 @@ namespace OpenLogAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] LogEntry entry)
         {
-            await _logService.AddLogAsync(entry);
-            return CreatedAtAction("Entry is added", new { id = entry.Id });
+            if (entry == null)
+            {
+                return BadRequest("Log entry is required.");
+            }
+
+
+            var createdÍd = await _logService.AddLogAsync(entry);
+            return Created("Entry is added", createdÍd);
         }
      
     }
